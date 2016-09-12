@@ -34,7 +34,8 @@ class VstsBuildStatusMonitor:
     # TODO : iterate the list of builds and only show red if the first i.e. last run
     # master branch build failed.
     def getstatus(self):
-        uri = 'https://' + self.vsts_account + '.visualstudio.com/DefaultCollection'
+        uri = 'https://' + self.vsts_account 
+        uri += '.visualstudio.com/DefaultCollection'
         uri += '/' + self.vsts_project + '/'
         uri += '_apis/build/builds?definitions=' + str(self.buildid)
         uri += '&statusFilter=completed'
@@ -45,7 +46,8 @@ class VstsBuildStatusMonitor:
 
         name = ''
         colour = self.colours.AMBER()
-        status = '$timestamp$ - Build id: $id$, \'$name$\' status is $colour$ ($breaker$)'
+        status = '$timestamp$ - Build id: $id$, \'$name$\' ' \
+                 'status is $colour$ ($breaker$)'
 
         self.lastrequesturi = uri 
         self.breaker = ''
