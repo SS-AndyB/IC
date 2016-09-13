@@ -3,10 +3,10 @@
 class Colours(object):
     """docstring for TrafficLightColours"""
 
-    def __init__(self, red="RED", green="GREEN", amber="AMBER"):
-        self.red = red
-        self.green = green
-        self.amber = amber
+    def __init__(self):
+        self.red="RED"
+        self.green="GREEN"
+        self.amber="AMBER"
 
     def RED(self):
         return self.red

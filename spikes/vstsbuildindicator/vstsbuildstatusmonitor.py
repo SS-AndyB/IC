@@ -11,6 +11,8 @@ class VstsBuildStatusMonitor:
     breaker = ''
 
     def __init__(self, buildid, colours, teamaccount, teamproject, key):
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        print (timestamp + ' - creating build watcher for id ' + str(buildid))
         self.buildid = buildid
         self.colours = colours
         self.vsts_account = teamaccount
@@ -46,8 +48,8 @@ class VstsBuildStatusMonitor:
 
         name = ''
         colour = self.colours.AMBER()
-        status = '$timestamp$ - Build id: $id$, \'$name$\' ' \
-                 'status is $colour$ ($breaker$)'
+        status = '$timestamp$ - Build $id$, \'$name$\' ' \
+                 'status is $colour$ (breakers: $breaker$)'
 
         self.lastrequesturi = uri 
         self.breaker = ''
@@ -59,7 +61,7 @@ class VstsBuildStatusMonitor:
                 count = r.json()['count']
                 if(count == 0):
                     colour = self.colours.AMBER()
-                    print (self.getbuildname() + "  no count")
+                    #print (self.getbuildname() + "  no count")
                 else:
                     # loop over all list items checking result and branch
                     for resultslistitem in range(0, count-1):
@@ -70,7 +72,7 @@ class VstsBuildStatusMonitor:
                         branch = entry['sourceBranch']
                         name   = entry['definition']['name']
                         dev    = entry['requestedFor']['displayName']
-                        print (name + " " +  str(id) + " " + branch)
+                        #print (name + " " +  str(id) + " " + branch)
 
                         if (branch == 'refs/heads/master'):
                             if (result == 'succeeded'):

@@ -14,7 +14,12 @@ class Hub2ProjectDetails(object):
         self.TEAMSERVICESACCOUNT = 'solidsoftreply-emvs'
         self.TEAMPROJECT = 'Hub'
         self.BUILDS_TO_WATCH = [25, 39, 42, 49]
-        self.REFRESH_INTERVAL_SECONDS = 10
+        self.REPOS_TO_WATCH = [ 'Generic%20Core%20Platform',
+                                'Emvs%20Core%20Platform',
+                                'Emvs%20European%20Hub',
+                                'EMVS%20Administration%20Proxy']
+        
+        self.REFRESH_INTERVAL_SECONDS = 30
 
 
     def getapikey(self):
@@ -35,4 +40,8 @@ class Hub2ProjectDetails(object):
 
     def getrefreshintervalseconds(self):
         return self.REFRESH_INTERVAL_SECONDS
+
+
+    def getgitrepostowatch(self):
+        return self.REPOS_TO_WATCH
 
