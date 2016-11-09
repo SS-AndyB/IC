@@ -16,3 +16,7 @@ class Colours(object):
 
     def GREEN(self):
         return self.green
+
+
+    def ALL(self):
+        return [self.red, self.amber, self.green]

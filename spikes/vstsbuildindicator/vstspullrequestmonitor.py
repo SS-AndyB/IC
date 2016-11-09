@@ -43,12 +43,15 @@ class PullRequestMonitor:
                 
 
         except:
-            print ("error caught interrogating " + self.lastrequesturi)
+            timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+            print (timestamp + ' - error caught interrogating ' + 
+        					self.lastrequesturi)
             pass
             # we swallow all communication errors
 
         #print ("URI: " + self.lastrequesturi)
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-        print (timestamp + " - PR: " + self.gitrepo + " has " + str(count) + " pull requests")
+        print (timestamp + " - PR: " + self.gitrepo + " has " + str(count) +
+        		 " pull requests")
 
         return count

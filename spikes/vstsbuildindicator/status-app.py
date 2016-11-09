@@ -13,34 +13,32 @@ class StatusApp:
     def __init__(self):
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
         print (timestamp + " - starting monitoring")
+        
         self.colourvalues = trafficlights.Colours()
-
-        self.ALL_USED_COLOURS = (self.colourvalues.RED(),
-                                 self.colourvalues.AMBER(),
-                                 self.colourvalues.GREEN())
-
         self.display = displayotron.Display(self.colourvalues)
 
-        # quick test on start to check that all LEDs are working
-        for colour in self.ALL_USED_COLOURS:
-            self.display.setcolour(colour)
-            time.sleep(1)
-
         h2 = vstsprojectdetails.Hub2ProjectDetails()
+        
+        self.monitorinterval = h2.getrefreshintervalseconds()
+        
+        # quick test on start to check that all LEDs are working
+        for colour in self.colourvalues.ALL():
+            self.display.setcolour(colour)
+            time.sleep(0.5)
 
+        
+        # build the pull request api watchers
         self.pullrequestmonitors = []
-
         for repo in h2.getgitrepostowatch():
             prmonitor = vstspullrequestmonitor.PullRequestMonitor(
                                     teamaccount=h2.getvstsaccount(),
                                     teamproject=h2.getteamprojectname(),
                                     repo=repo,
                                     key=h2.getapikey())
-
             self.pullrequestmonitors.append(prmonitor)
 
-        self.buildmonitors = []
-        
+        # construct the build results api watchers
+        self.buildmonitors = []       
         for buildid in h2.getbuildstowatch():
             monitor = vstsbuildstatusmonitor.VstsBuildStatusMonitor(
                 buildid=buildid,
@@ -48,16 +46,16 @@ class StatusApp:
                 teamaccount=h2.getvstsaccount(),
                 teamproject=h2.getteamprojectname(),
                 key=h2.getapikey())
-
             self.buildmonitors.append(monitor)
 
-        self.monitorinterval = h2.getrefreshintervalseconds()
-        #print("buildmonitors created : " + str(len(buildmonitors)))
-        #print("pr monitors created : " + str(len(pullrequestmonitors)))
 
-
-    def processpullrequests(self):
-        # first get pull request count
+    def getStatusofPullRequests(self):
+        """
+        Get pull request count for all repositories that we are given
+        in the project details in the constructor.
+        Aggregate the results. return of -1 means failure and 
+        when that happens we indicate that error.
+        """
         pullrequestsopen = 0
         
         for prqmonitor in self.pullrequestmonitors:
@@ -79,11 +77,22 @@ class StatusApp:
         return message
 
 
-    def processbuilds(self):
-        colours = self.colourvalues
-        summarystatus = colours.GREEN()
+    def getStatusofBuilds(self):
+        """
+        logic here queries builds using adapter objects in an array
+        then sets the status message and the overall result colour
+        to use to backlight the LCD display.
+        Any build failure => RED
+        Any errors getting data => AMBER
+        No errors => GREEN
+        Message shows build name and details of person who broke it if
+        there was a build failure for all builds where this is the case.
+        Message is otherwise self explanatory.
+        """
         failingbuilds = ""
         failingcount = 0
+        colours = self.colourvalues
+        summarystatus = colours.GREEN()
 
         for monitor in self.buildmonitors:
             status = monitor.getstatus()
@@ -117,13 +126,22 @@ class StatusApp:
         # try / except allows us to loop forever until ^C is pressed
         try:
             while (True):
-                message = self.processpullrequests()
+                message = self.getStatusofPullRequests()
                 
-                summarystatus, buildmessage = self.processbuilds()
+                summarystatus, buildmessage = self.getStatusofBuilds()
 
+                # if the build succeeded we are happy with the PR count
+                # and build success message
                 displaymessage = message + buildmessage
 
-                #self.display.setbarlevel(failingcount / len(h2.getbuildstowatch()))
+                # if a build has failed we need all 3 lines to show
+                # the failure message - perhaps we should truncate
+                # at 3x16 ?
+                if (summarystatus != colours.GREEN):
+                    displaymessage = buildmessage
+
+                #self.display.setbarlevel(failingcount / 
+                #                           len(h2.getbuildstowatch()))
                 self.display.setcolour(summarystatus)
                 self.display.settext(displaymessage)
                 timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -135,7 +153,7 @@ class StatusApp:
                 
                 time.sleep(self.monitorinterval)
 
-        #except Exception as e:
+        except Exception as e:
             timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
             print (timestamp + " - " + e)
             pass
