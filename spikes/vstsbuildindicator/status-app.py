@@ -137,7 +137,7 @@ class StatusApp:
                 # if a build has failed we need all 3 lines to show
                 # the failure message - perhaps we should truncate
                 # at 3x16 ?
-                if (summarystatus != colours.GREEN):
+                if (summarystatus != colours.GREEN()):
                     displaymessage = buildmessage[:48]
 
                 #self.display.setbarlevel(failingcount / 
