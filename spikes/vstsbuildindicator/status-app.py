@@ -138,7 +138,7 @@ class StatusApp:
                 # the failure message - perhaps we should truncate
                 # at 3x16 ?
                 if (summarystatus != colours.GREEN):
-                    displaymessage = buildmessage
+                    displaymessage = buildmessage[:48]
 
                 #self.display.setbarlevel(failingcount / 
                 #                           len(h2.getbuildstowatch()))
