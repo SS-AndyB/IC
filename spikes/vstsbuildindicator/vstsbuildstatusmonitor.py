@@ -81,6 +81,9 @@ class VstsBuildStatusMonitor:
                                 colour = self.colours.RED()
                                 self.breaker = dev
                                 break
+                            elif (result == 'canceled'):
+                                # carry on!
+                                continue
                             else:
                                 colour = self.colours.AMBER()
                                 break
