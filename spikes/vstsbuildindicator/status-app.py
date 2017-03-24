@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 import time
-import vstsprojectdetails
-import vstsbuildstatusmonitor
-import vstsbuildqueuemonitor
-import vstspullrequestmonitor
-import displayotron
-import trafficlights
+
+#from lib import displayotron
+from lib import displayotronstub as displayotron
+from lib import trafficlights
+from lib import vstsprojectdetails
+from lib import vstspullrequestmonitor
+from lib import vstsbuildstatusmonitor
 
 
 class StatusApp:
@@ -49,7 +50,7 @@ class StatusApp:
             self.buildmonitors.append(monitor)
 
 
-    def getStatusofPullRequests(self):
+    def getStatusOfPullRequests(self):
         """
         Get pull request count for all repositories that we are given
         in the project details in the constructor.
@@ -103,11 +104,11 @@ class StatusApp:
                 failingbuilds += monitor.getbreaker() + " "
                 failingcount += 1
 
-            elif (status == colours.GREEN() and \
+            elif (status == colours.GREEN() and
                     summarystatus == colours.GREEN()):
                 summarystatus = colours.GREEN()
 
-            elif (status == colours.AMBER() and \
+            elif (status == colours.AMBER() and
                     summarystatus == colours.GREEN()):
                 summarystatus = colours.AMBER()
         
@@ -126,7 +127,7 @@ class StatusApp:
         # try / except allows us to loop forever until ^C is pressed
         try:
             while (True):
-                message = self.getStatusofPullRequests()
+                message = self.getStatusOfPullRequests()
                 
                 summarystatus, buildmessage = self.getStatusofBuilds()
 
