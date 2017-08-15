@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import time
+
 import requests
-import trafficlights
 
 
 class VstsBuildStatusMonitor:

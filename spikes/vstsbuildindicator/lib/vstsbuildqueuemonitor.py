@@ -13,8 +13,8 @@ class QueueStatusMonitor:
     def getlastrequesturi(self):
         return self.lastrequesturi
 
-    # TODO : iterate the list of builds and only show red if the first i.e. last run
-    # master branch build failed.
+    # TODO: iterate the list of builds and only show red if the first i.e. last run
+    # TODO: of the master branch build failed.
     def getqueuelength(self):
         uri = 'https://' + self.vsts_account 
         uri += '.visualstudio.com/DefaultCollection/'

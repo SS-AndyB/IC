@@ -7,6 +7,7 @@ class Hub2ProjectDetails(object):
         """
         # EmvsCorePlatform_Master_CI 39
         # EmvsEuropeanHub_Master_CI 42
+        # EmvsHubCommon_Master_CI   79
         # GenericCorePlatform_Master_CI 25
         # EmvsAdminProxy_Master_CI 49
         # EmvsHubCommon_Master_CI 79
@@ -18,7 +19,7 @@ class Hub2ProjectDetails(object):
         self.BUILDS_TO_WATCH = [25, 39, 42, 49, 79, 99]
         self.REPOS_TO_WATCH = [ 'Generic%20Core%20Platform',
                                 'Emvs%20Core%20Platform',
-                                'EMVS%20Hub%20Common',
+                                "EMVS%20Hub%20Common",
                                 'Emvs%20European%20Hub',
                                 'EMVS%20Administration%20Proxy',
 				'Emvs%20European%20Hub%20Operations']

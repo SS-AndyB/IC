@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import time
+
 import dothat.backlight as backlight
 import dothat.lcd as lcd
-import trafficlights
 
 
 class Display:
