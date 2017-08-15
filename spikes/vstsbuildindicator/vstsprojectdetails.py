@@ -9,21 +9,25 @@ class Hub2ProjectDetails(object):
         # EmvsEuropeanHub_Master_CI 42
         # GenericCorePlatform_Master_CI 25
         # EmvsAdminProxy_Master_CI 49
+        # EmvsHubCommon_Master_CI 79
+	# ISV-Tools-CI 99
         """
-        self.APIACCESSKEY = ''
+        self.APIKEY = ''
         self.TEAMSERVICESACCOUNT = 'solidsoftreply-emvs'
         self.TEAMPROJECT = 'Hub'
-        self.BUILDS_TO_WATCH = [25, 39, 42, 49]
+        self.BUILDS_TO_WATCH = [25, 39, 42, 49, 79, 99]
         self.REPOS_TO_WATCH = [ 'Generic%20Core%20Platform',
                                 'Emvs%20Core%20Platform',
+                                'EMVS%20Hub%20Common',
                                 'Emvs%20European%20Hub',
-                                'EMVS%20Administration%20Proxy']
+                                'EMVS%20Administration%20Proxy',
+				'Emvs%20European%20Hub%20Operations']
         
-        self.REFRESH_INTERVAL_SECONDS = 30
+        self.REFRESH_INTERVAL_SECONDS = 120
 
 
     def getapikey(self):
-        return self.APIACCESSKEY
+        return self.APIKEY
 
 
     def getvstsaccount(self):
